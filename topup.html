@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>💵 Top Up Balance</title>
+<link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@600&display=swap" rel="stylesheet">
+<style>
+body {
+    font-family: 'League Spartan', sans-serif;
+    margin:0;
+    padding:0;
+    background: linear-gradient(135deg,#ff7f50,#ffd700);
+    color:#111;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    height:100vh;
+    text-align:center;
+}
+
+h1 { font-size:2rem; margin-bottom:20px; color:#fff; text-shadow: 0 0 10px #000; }
+
+.balance-display { font-size:1.5rem; margin-bottom:20px; color:#fff; }
+
+.btn-row { display:flex; gap:15px; margin-bottom:15px; }
+
+.topup-btn {
+    padding:12px 25px;
+    border:none;
+    border-radius:12px;
+    font-weight:bold;
+    font-size:1rem;
+    cursor:pointer;
+    background: linear-gradient(45deg,#ffd700,#ff7f50);
+    color:#111;
+    box-shadow: 0 0 15px #000;
+    transition:0.25s;
+}
+.topup-btn:hover { transform:scale(1.1); background: linear-gradient(45deg,#fff200,#ff4500); }
+
+.custom-input {
+    padding:8px 12px;
+    border-radius:10px;
+    border:none;
+    font-size:1rem;
+    width:100px;
+    text-align:center;
+    font-weight:bold;
+}
+
+/* Bonus popup */
+#bonus-popup {
+    position: fixed;
+    top:30%;
+    left:50%;
+    transform: translateX(-50%);
+    background: rgba(255,215,0,0.9);
+    color:#111;
+    font-weight:bold;
+    font-size:1.2rem;
+    padding:20px 30px;
+    border-radius:15px;
+    box-shadow: 0 0 25px gold, 0 0 40px orange;
+    display:none;
+    z-index:10000;
+}
+</style>
+</head>
+<body>
+<h1>💳 Top Up Your Balance</h1>
+<div class="balance-display">Current Balance: <span id="balance">0 💵</span></div>
+
+<div class="btn-row">
+    <button class="topup-btn" onclick="addBalance(50)">+50 💵</button>
+    <button class="topup-btn" onclick="addBalance(100)">+100 💵</button>
+    <button class="topup-btn" onclick="addBalance(200)">+200 💵</button>
+</div>
+
+<div style="margin-bottom:15px;">
+    <input type="number" id="custom-amount" class="custom-input" placeholder="Amount"/>
+    <button class="topup-btn" onclick="customTopUp()">Top Up</button>
+</div>
+
+<button class="topup-btn" onclick="goBack()">⬅️ Back to Game</button>
+
+<div id="bonus-popup"></div>
+
+<script>
+let balance = parseInt(localStorage.getItem("balance")) || 0;
+document.getElementById("balance").textContent = balance + " 💵";
+
+// Function to show bonus popup
+function showBonusPopup(bonus){
+    const popup = document.getElementById("bonus-popup");
+    popup.textContent = `🎉 Bonus! You received ${bonus} 💵 extra!`;
+    popup.style.display = "block";
+    setTimeout(()=>popup.style.display="none", 2000);
+}
+
+// Random bonus between 10% - 50%
+function applyBonus(amount){
+    const bonus = Math.floor(amount * (Math.random()*0.4 + 0.1));
+    if(bonus>0) showBonusPopup(bonus);
+    return bonus;
+}
+
+function addBalance(amount){
+    const bonus = applyBonus(amount);
+    balance += amount + bonus;
+    updateBalance();
+}
+
+function customTopUp(){
+    const amt = parseInt(document.getElementById("custom-amount").value);
+    if(isNaN(amt) || amt<=0) return alert("Enter a valid amount!");
+    const bonus = applyBonus(amt);
+    balance += amt + bonus;
+    updateBalance();
+}
+
+function updateBalance(){
+    localStorage.setItem("balance", balance);
+    document.getElementById("balance").textContent = balance + " 💵";
+}
+
+function goBack(){ window.location.href="index.html"; }
+</script>
+</body>
+</html>
+
+

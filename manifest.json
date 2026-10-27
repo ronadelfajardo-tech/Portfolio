@@ -1,0 +1,15 @@
+{
+  "generated": true,
+  "note": "Produced by desktop-app/tools/make-audio.mjs - edit that file, not these.",
+  "sampleRate": 44100,
+  "format": "16-bit mono PCM WAV",
+  "sounds": [
+    "found",
+    "mistake",
+    "win",
+    "power",
+    "coin",
+    "ui",
+    "lose"
+  ]
+}
